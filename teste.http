@@ -1,0 +1,99 @@
+### Nova Pessoa Inválida
+
+POST http://localhost:8080/api/v1/pessoas HTTP/1.1
+Content-Type: application/json
+
+{
+	"nome": "Ciclano de Tal"
+}
+
+### Nova Pessoa Válida
+
+POST http://localhost:8080/api/v1/pessoas HTTP/1.1
+Content-Type: application/json
+
+{
+	"cpf": "57649311694",
+	"nome": "Delano de Tal"
+}
+
+### Atualizar Pessoa
+PUT http://localhost:8080/api/v1/pessoas/bf79fbcd-9464-48e4-840b-16d6d55d5301 HTTP/1.1
+Content-Type: application/json
+
+{
+	"cpf": "57649311694",
+	"nome": "Zigomar de Tal"
+}
+
+
+
+### Listar Pessoas
+GET http://localhost:8080/api/v1/pessoas HTTP/1.1
+
+### Ler Pessoa
+GET http://localhost:8080/api/v1/pessoas/16536078748 HTTP/1.1
+
+### Excluir Pessoa
+DELETE http://localhost:8080/api/v1/pessoas/16536078748 HTTP/1.1
+
+
+### Ler Pessoa CPF mal-formatado, retorna 400 BAD REQUEST
+GET http://localhost:8080/api/v1/pessoas/15678903 HTTP/1.1
+
+
+### Ler Pessoa CPF mal-formatado
+
+GET http://localhost:8080/api/v1/pessoas/123456q7891 HTTP/1.1
+
+
+
+### Listar Doações (Doações é um subrecurso de Pessoa)
+GET http://localhost:8080/api/v1/pessoas/16536078748/doacoes HTTP/1.1
+
+### Ler Doação Específica
+GET http://localhost:8080/api/v1/pessoas/16536078748/doacoes/2 HTTP/1.1
+
+### Fazer Doação
+POST http://localhost:8080/api/v1/pessoas/16536078748/doacoes HTTP/1.1
+Content-Type: application/json
+
+{
+	"descricao": "Sofá 2 lugares",
+	"idCategoria": 1
+}
+
+### Ler Doação
+GET http://localhost:8080/api/v1/pessoas/16536078748/doacoes/1 HTTP/1.1
+
+### Listar Doações
+GET http://localhost:8080/api/v1/pessoas/16536078748/doacoes?limit=10&offset=1 HTTP/1.1
+206
+
+
+### Atualizar doação (IDEMPOTENTE)
+PUT http://localhost:8080/api/v1/pessoas/16536078748/doacoes/1
+Content-Type: application/json
+
+{
+	"descricao": "Sofá 3 lugares",
+	"idCategoria": 2
+}
+
+### Cancelar doação (NÃO IDEMPOTENTE)
+# Geralmente PATCH é usadao para uma transição de estado validada
+PATCH http://localhost:8080/api/v1/pessoas/16536078748/doacoes/1
+Content-Type: application/json
+
+{
+	"operacao": "cancelar",
+	"detalhes": {
+
+	}
+}
+
+### Cancelar
+# verbo
+PUT http://localhost:8080/api/v1/pessoas/16536078748/doacoes/1/cancelar
+# substantivar o verbo
+PUT http://localhost:8080/api/v1/pessoas/16536078748/doacoes/1/cancelamentos

@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "a460afb6-3daa-4b80-9444-ef2df385d2bb",
+		"name": "PESSOAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19801671"
+	},
+	"item": [
+		{
+			"name": "200 LER PESSOA POR CPF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar uma pessoa e status 200 OK', () => {",
+							"    pm.expect(pm.response.code).to.be.equal(200)",
+							"    pm.expect(pm.response.status).to.be.equal('OK')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pessoas/16536078748",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pessoas",
+						"16536078748"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 LER PESSOA POR CPF 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Deve retornar uma pessoa e status 200 OK', () => {",
+							"    pm.expect(pm.response.code).to.be.equal(200)",
+							"    pm.expect(pm.response.status).to.be.equal('OK')",
+							"})",
+							"",
+							"pm.test('Deve retornar uma pessoa com id, cpf e nome', () => {",
+							"    const dados = pm.response.json()",
+							"    pm.expect(dados).to.be.an('object')",
+							"    pm.expect(dados).to.deep.equal({ \"id\": \"7a46e484-0cce-4ac1-a53b-8534ecb06368\",",
+							"    \"cpf\": \"67384572606\",  \"nome\": \"Ciclano de Tal\" })",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pessoas/67384572606",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pessoas",
+						"67384572606"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 CPF INVALIDO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar BAD REQUEST 400\", () => {",
+							"    pm.expect(pm.response.code).to.be.equal(400)",
+							"})",
+							"",
+							"pm.test(\"Deve retornar array com erros\", () => {",
+							"    const dados = pm.response.json()",
+							"    pm.expect(dados).to.have.property(\"erros\")",
+							"    pm.expect(dados).to.be.an(\"object\")",
+							"    pm.expect(dados.erros).to.be.an(\"array\")",
+							"})",
+							"",
+							"pm.test(\"Deve retorna a mensagem CPF inválido\", () => {",
+							"    const msg = pm.response.json().erros[0]",
+							"    pm.expect(msg).to.contain(\"CPF inválido\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pessoas/16536078799",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pessoas",
+						"16536078799"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 NOVA PESSOA SEM CPF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar 400 CPF obrigatório\", () => {",
+							"    const resp = pm.response.json()",
+							"    pm.expect(pm.response.code).to.be.equal(400)",
+							"    pm.expect(resp.erros[0]).to.contain('CPF é obrigatório')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\": \"Ciclano de Tal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pessoas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pessoas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 LER PESSOA EM MENOS DE 0.5s",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve responder em menos de 0.5s\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/pessoas/16536078748",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pessoas",
+						"16536078748"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
